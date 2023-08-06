@@ -1,4 +1,5 @@
 var arrNhanVien = [];
+
 document.querySelector("#btnThemNV").onclick = function (e) {
   e.preventDefault();
   var nhanVienNew = new NhanVien();
@@ -42,6 +43,19 @@ document.querySelector("#btnThemNV").onclick = function (e) {
   localStoreArr();
 };
 
+document.querySelector("#btnThem").onclick = function () {
+  document.querySelector("#btnCapNhat").hidden = true;
+  document.querySelector("#btnThemNV").hidden = false;
+  document.querySelector("#btnThemNV").disabled = false;
+  document.querySelector("#btnDong").hidden = false;
+  document.querySelector("#btnDong").disabled = false;
+};
+
+document.querySelector("#btnDong").onclick = function () {
+  document.querySelector("#btnCapNhat").disabled = false;
+  document.querySelector("#btnCapNhat").hidden = false;
+};
+
 function renderTableNhanVien(arrNhanVien) {
   var outputHTML = "";
   for (var index = 0; index < arrNhanVien.length; index++) {
@@ -73,12 +87,16 @@ function xoaNhanVien(indexDel) {
 }
 
 function suaNhanVien(indexEdit) {
+  document.querySelector("#btnCapNhat").hidden = false;
+  document.querySelector("#btnThemNV").hidden = true;
+  document.querySelector("#btnDong").hidden = true;
   var nvEdit = arrNhanVien[indexEdit];
   console.log(indexEdit);
   console.log(nvEdit);
   document.querySelector("#tknv").value = nvEdit.tkNhanVien;
   document.querySelector("#name").value = nvEdit.tenNhanVien;
   document.querySelector("#email").value = nvEdit.email;
+  document.querySelector("#password").value = nvEdit.matKhau;
   document.querySelector("#datepicker").value = nvEdit.ngayLam;
   document.querySelector("#luongCB").value = nvEdit.luongCoBan;
   document.querySelector("#chucvu").value = nvEdit.chucVu;
@@ -162,17 +180,36 @@ document.querySelector("#btnCapNhat").onclick = function () {
       break;
     }
   }
+  document.querySelector("#btnThemNV").hidden = true;
+  document.querySelector("#btnDong").hidden = true;
+  document.querySelector("#btnThemNV").disabled = false;
+  document.querySelector("#tknv").disabled = false;
 
   renderTableNhanVien(arrNhanVien);
   localStoreArr();
 
-  //ẩn input
-  document.querySelector("#btnThemNV").disabled = false;
-  document.querySelector("#tknv").disabled = false;
-
   document.querySelector("#myModal").setAttribute("style", "display: none;");
   document.querySelector("#myModal").setAttribute("aria-hidden", "true");
   document.querySelector("body").classList.remove("modal-open");
+};
+
+//tìm kiếm
+document.querySelector("#searchName").oninput = function () {
+  var tuKhoa = document.querySelector("#searchName").value;
+
+  var arrSearch = [];
+  for (index = 0; index < arrNhanVien.length; index++) {
+    var xepLoaiNV = arrNhanVien[index].xepLoai;
+
+    tuKhoa = stringToSlug(tuKhoa); //đổi từ chữ HOA --> thường
+    xepLoaiNV = stringToSlug(xepLoaiNV); //đổi từ chữ HOA --> thường
+
+    if (xepLoaiNV.search(tuKhoa) !== -1) {
+      arrSearch.push(arrNhanVien[index]);
+    }
+  }
+
+  renderTableNhanVien(arrSearch);
 };
 
 window.onload = function () {
