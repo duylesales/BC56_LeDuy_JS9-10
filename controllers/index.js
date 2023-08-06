@@ -77,14 +77,16 @@ document.querySelector("#btnThemNV").onclick = function (e) {
 
   arrNhanVien.push(nhanVienNew);
   renderTableNhanVien(arrNhanVien);
+  // Lưu local
   localStoreArr();
+  // Reset form
   document.querySelector("#tknv").value = "";
   document.querySelector("#name").value = "";
   document.querySelector("#email").value = "";
   document.querySelector("#password").value = "";
   document.querySelector("#datepicker").value = "";
   document.querySelector("#luongCB").value = "";
-  document.querySelector("#chucvu").value = "";
+  document.querySelector("#chucvu").value = "Chọn chức vụ";
   document.querySelector("#gioLam").value = "";
 };
 
@@ -155,6 +157,10 @@ function suaNhanVien(indexEdit) {
   var showInputb = document.querySelector("body");
   showInputb.setAttribute("style", "padding-right: 17px;");
   showInputb.classList.add("modal-open");
+
+  // var btnDong = document.querySelector("#btnDong");
+  // btnDong.setAttribute("style", "padding: 10px;border:none;");
+  // btnDong.classList.add("close");
 }
 
 //Phương thức lưu vào application storage
@@ -187,6 +193,45 @@ document.querySelector("#btnCapNhat").onclick = function () {
   nhanVienUpdate.luongCoBan = document.querySelector("#luongCB").value;
   nhanVienUpdate.chucVu = document.querySelector("#chucvu").value;
   nhanVienUpdate.gioLam = document.querySelector("#gioLam").value;
+
+  // Validation sau khi nhận được các giá trị cập nhật
+  var valid =
+    validation.kiemTraRong(nhanVienUpdate.tkNhanVien, "taiKhoan") &
+    validation.kiemTraRong(nhanVienUpdate.tenNhanVien, "hoVaTen") &
+    validation.kiemTraRong(nhanVienUpdate.email, "email") &
+    validation.kiemTraRong(nhanVienUpdate.matKhau, "matKhau") &
+    validation.kiemTraRong(nhanVienUpdate.ngayLam, "ngayThang") &
+    validation.kiemTraRong(nhanVienUpdate.luongCoBan, "luongCoBan") &
+    validation.kiemTraRong(nhanVienUpdate.chucVu, "chucVu") &
+    validation.kiemTraRong(nhanVienUpdate.gioLam, "gioLam");
+  //kiểm tra độ dài
+  valid =
+    valid &
+    validation.kiemTraDoDai(nhanVienUpdate.tkNhanVien, "taiKhoan", 4, 6) &
+    validation.kiemTraDoDai(nhanVienUpdate.matKhau, "matKhau", 6, 10);
+  //kiểm tra ký tự
+  valid =
+    valid & validation.kiemTraTatCaKyTu(nhanVienUpdate.tenNhanVien, "hoVaTen");
+  //kiểm tra email
+  valid = valid & validation.kiemTraEmail(nhanVienUpdate.email, "email");
+  //kiểm tra giá trị
+  valid =
+    valid &
+    validation.kiemTraGiaTri(
+      nhanVienUpdate.luongCoBan,
+      "luongCoBan",
+      1000000,
+      20000000
+    ) &
+    validation.kiemTraGiaTri(nhanVienUpdate.gioLam, "gioLam", 80, 200);
+  //kiểm tra chức vụ
+  valid = valid & validation.kiemTraChucVu(nhanVienUpdate.chucVu, "chucVu");
+  //kiểm tra mật khẩu
+  valid = valid & validation.kiemTraPassword(nhanVienUpdate.matKhau, "matKhau");
+
+  if (!valid) {
+    return;
+  }
 
   var tongLuong = "";
   if (nhanVienUpdate.chucVu === "Sếp") {
@@ -226,7 +271,7 @@ document.querySelector("#btnCapNhat").onclick = function () {
     }
   }
   document.querySelector("#btnThemNV").hidden = true;
-  document.querySelector("#btnDong").hidden = true;
+  // document.querySelector("#btnDong").hidden = true;
   document.querySelector("#btnThemNV").disabled = false;
   document.querySelector("#tknv").disabled = false;
 
@@ -236,6 +281,16 @@ document.querySelector("#btnCapNhat").onclick = function () {
   document.querySelector("#myModal").setAttribute("style", "display: none;");
   document.querySelector("#myModal").setAttribute("aria-hidden", "true");
   document.querySelector("body").classList.remove("modal-open");
+
+  // Reset form
+  document.querySelector("#tknv").value = "";
+  document.querySelector("#name").value = "";
+  document.querySelector("#email").value = "";
+  document.querySelector("#password").value = "";
+  document.querySelector("#datepicker").value = "";
+  document.querySelector("#luongCB").value = "";
+  document.querySelector("#chucvu").value = "Chọn chức vụ";
+  document.querySelector("#gioLam").value = "";
 };
 
 //tìm kiếm
