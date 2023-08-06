@@ -5,7 +5,6 @@ function NhanVien() {
   this.matKhau = "";
   this.ngayLam = "";
   this.luongCoBan = "";
-  this.chucVu = "";
   this.loaiNhanVien = "";
   this.gioLam = "";
   this.tongLuong = "";
