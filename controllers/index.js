@@ -8,6 +8,7 @@ document.querySelector("#btnThemNV").onclick = function (e) {
   nhanVienNew.matKhau = document.querySelector("#password").value;
   nhanVienNew.ngayLam = document.querySelector("#datepicker").value;
   nhanVienNew.luongCoBan = document.querySelector("#luongCB").value;
+  nhanVienNew.chucVu = document.querySelector("#chucvu").value;
   nhanVienNew.gioLam = document.querySelector("#gioLam").value;
 
   // Tính tổng lương
@@ -51,7 +52,7 @@ function renderTableNhanVien(arrNhanVien) {
               <td>${nhanVien.tenNhanVien}</td>
               <td>${nhanVien.email}</td>
               <td>${nhanVien.ngayLam}</td>
-              <td>${nhanVien.loaiNhanVien}</td>
+              <td>${nhanVien.chucVu}</td>
               <td>${nhanVien.tongLuong}</td>
               <td>${nhanVien.xepLoai}</td>
               <td>
@@ -68,6 +69,7 @@ function xoaNhanVien(indexDel) {
   arrNhanVien.splice(indexDel, 1);
   //Sau khi xoá thì tạo lại table
   renderTableNhanVien(arrNhanVien);
+  localStoreArr();
 }
 
 function suaNhanVien(indexEdit) {
@@ -79,7 +81,8 @@ function suaNhanVien(indexEdit) {
   document.querySelector("#email").value = nvEdit.email;
   document.querySelector("#datepicker").value = nvEdit.ngayLam;
   document.querySelector("#luongCB").value = nvEdit.luongCoBan;
-  document.querySelector("#chucvu").value = nvEdit.loaiNhanVien;
+  document.querySelector("#chucvu").value = nvEdit.chucVu;
+  document.querySelector("#gioLam").value = nvEdit.gioLam;
 
   // Pop up lại giao diện input
   var showInput = document.querySelector("#myModal");
@@ -102,7 +105,6 @@ function localStoreArr() {
 //Phương thức lấy dữ liệu từ localstorage
 function getStore(name) {
   if (localStorage.getItem(name)) {
-    //Nếu có storage name đó thì mới đi vào if
     var str = localStorage.getItem(name);
     var jsonValue = JSON.parse(str);
 
@@ -112,13 +114,71 @@ function getStore(name) {
   return null;
 }
 
+document.querySelector("#btnCapNhat").onclick = function () {
+  var nhanVienUpdate = new NhanVien();
+  nhanVienUpdate.tkNhanVien = document.querySelector("#tknv").value;
+  nhanVienUpdate.tenNhanVien = document.querySelector("#name").value;
+  nhanVienUpdate.email = document.querySelector("#email").value;
+  nhanVienUpdate.matKhau = document.querySelector("#password").value;
+  nhanVienUpdate.ngayLam = document.querySelector("#datepicker").value;
+  nhanVienUpdate.luongCoBan = document.querySelector("#luongCB").value;
+  nhanVienUpdate.chucVu = document.querySelector("#chucvu").value;
+  nhanVienUpdate.gioLam = document.querySelector("#gioLam").value;
+
+  var tongLuong = "";
+  if (nhanVienUpdate.chucVu === "Sếp") {
+    tongLuong = nhanVienUpdate.luongCoBan * 3;
+  } else if (nhanVienUpdate.chucVu === "Trưởng phòng") {
+    tongLuong = nhanVienUpdate.luongCoBan * 2;
+  } else {
+    tongLuong = nhanVienUpdate.luongCoBan * 1;
+  }
+  nhanVienUpdate.tongLuong = tongLuong.toLocaleString();
+
+  //kiểm tra xếp loại của nhân viên
+  var xepLoai = "";
+  if (nhanVienUpdate.gioLam >= 192) {
+    xepLoai = "Xuất sắc";
+  } else if (nhanVienUpdate.gioLam >= 176) {
+    xepLoai = "Giỏi";
+  } else if (nhanVienUpdate.gioLam >= 160) {
+    xepLoai = "Khá";
+  } else {
+    xepLoai = "Trung Bình";
+  }
+  nhanVienUpdate.xepLoai = xepLoai;
+
+  for (index = 0; index < arrNhanVien.length; index++) {
+    if (arrNhanVien[index].tkNhanVien === nhanVienUpdate.tkNhanVien) {
+      arrNhanVien[index].tenNhanVien = nhanVienUpdate.tenNhanVien;
+      arrNhanVien[index].email = nhanVienUpdate.email;
+      arrNhanVien[index].matKhau = nhanVienUpdate.matKhau;
+      arrNhanVien[index].ngayLam = nhanVienUpdate.ngayLam;
+      arrNhanVien[index].luongCoBan = nhanVienUpdate.luongCoBan;
+      arrNhanVien[index].chucVu = nhanVienUpdate.chucVu;
+      arrNhanVien[index].gioLam = nhanVienUpdate.gioLam;
+      arrNhanVien[index].tongLuong = nhanVienUpdate.tongLuong;
+      arrNhanVien[index].xepLoai = nhanVienUpdate.xepLoai;
+      break;
+    }
+  }
+
+  renderTableNhanVien(arrNhanVien);
+  localStoreArr();
+
+  //ẩn input
+  document.querySelector("#btnThemNV").disabled = false;
+  document.querySelector("#tknv").disabled = false;
+
+  document.querySelector("#myModal").setAttribute("style", "display: none;");
+  document.querySelector("#myModal").setAttribute("aria-hidden", "true");
+  document.querySelector("body").classList.remove("modal-open");
+};
+
 window.onload = function () {
-  //Sự kiện khi windown load xong html css js
-  //Khi trang web load lên thì lấy dữ liệu từ storage arrSinhVien nếu có thì gán vào
   if (getStore("arrNhanVien")) {
-    //Lấy ra
     arrNhanVien = getStore("arrNhanVien");
-    //Tạo table
+
     renderTableNhanVien(arrNhanVien);
   }
 };
