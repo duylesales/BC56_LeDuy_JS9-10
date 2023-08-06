@@ -230,8 +230,12 @@
                     placeholder="Tài khoản"
                   />
                 </div>
-
-                <span class="sp-thongbao" id="tbTKNV"></span>
+                <p data-error-required="taiKhoan" class="text text-danger"></p>
+                <p
+                  data-error-min-max-length="taiKhoan"
+                  class="text text-danger"
+                ></p>
+                <span class="sp-thongbao" id="tbTKNV"> </span>
               </div>
 
               <div class="form-group">
@@ -249,7 +253,12 @@
                     placeholder="Họ và tên"
                   />
                 </div>
-                <span class="sp-thongbao" id="tbTen"></span>
+                <p data-error-required="hoVaTen" class="text text-danger"></p>
+                <p
+                  data-error-regexLetter="hoVaTen"
+                  class="text text-danger"
+                ></p>
+                <span class="sp-thongbao" id="tbTen"> </span>
               </div>
 
               <div class="form-group">
@@ -268,7 +277,9 @@
                   />
                 </div>
 
-                <span class="sp-thongbao" id="tbEmail"></span>
+                <p data-error-required="email" class="text text-danger"></p>
+                <p data-error-regexEmail="email" class="text text-danger"></p>
+                <span class="sp-thongbao" id="tbEmail"> </span>
               </div>
 
               <div class="form-group">
@@ -286,7 +297,16 @@
                     placeholder="Mật khẩu"
                   />
                 </div>
-                <span class="sp-thongbao" id="tbMatKhau"></span>
+                <p data-error-required="matKhau" class="text text-danger"></p>
+                <p
+                  data-error-min-max-length="matKhau"
+                  class="text text-danger"
+                ></p>
+                <p
+                  data-error-regexPassword="matKhau"
+                  class="text text-danger"
+                ></p>
+                <span class="sp-thongbao" id="tbMatKhau"> </span>
               </div>
 
               <div class="form-group">
@@ -305,7 +325,8 @@
                   />
                 </div>
 
-                <span class="sp-thongbao" id="tbNgay"></span>
+                <p data-error-required="ngayThang" class="text text-danger"></p>
+                <span class="sp-thongbao" id="tbNgay"> </span>
               </div>
 
               <div class="form-group">
@@ -323,7 +344,15 @@
                     placeholder="Lương cơ bản"
                   />
                 </div>
-                <span class="sp-thongbao" id="tbLuongCB"></span>
+                <p
+                  data-error-required="luongCoBan"
+                  class="text text-danger"
+                ></p>
+                <p
+                  data-error-min-max-value="luongCoBan"
+                  class="text text-danger"
+                ></p>
+                <span class="sp-thongbao" id="tbLuongCB"> </span>
               </div>
               <div class="form-group">
                 <div class="input-group">
@@ -340,7 +369,9 @@
                   </select>
                 </div>
 
-                <span class="sp-thongbao" id="tbChucVu"></span>
+                <p data-error-required="chucVu" class="text text-danger"></p>
+                <p data-error-chucVu="chucVu" class="text text-danger"></p>
+                <span class="sp-thongbao" id="tbChucVu"> </span>
               </div>
               <div class="form-group">
                 <div class="input-group">
@@ -357,7 +388,12 @@
                     placeholder="Giờ làm"
                   />
                 </div>
-                <span class="sp-thongbao" id="tbGiolam"></span>
+                <p data-error-required="gioLam" class="text text-danger"></p>
+                <p
+                  data-error-min-max-value="gioLam"
+                  class="text text-danger"
+                ></p>
+                <span class="sp-thongbao" id="tbGiolam"> </span>
               </div>
             </form>
           </div>

@@ -36,11 +36,56 @@ document.querySelector("#btnThemNV").onclick = function (e) {
   }
   nhanVienNew.xepLoai = xepLoai;
 
-  console.log(nhanVienNew);
+  //kiểm tra không được để trống
+  var valid =
+    validation.kiemTraRong(nhanVienNew.tkNhanVien, "taiKhoan") &
+    validation.kiemTraRong(nhanVienNew.tenNhanVien, "hoVaTen") &
+    validation.kiemTraRong(nhanVienNew.email, "email") &
+    validation.kiemTraRong(nhanVienNew.matKhau, "matKhau") &
+    validation.kiemTraRong(nhanVienNew.ngayLam, "ngayThang") &
+    validation.kiemTraRong(nhanVienNew.luongCoBan, "luongCoBan") &
+    validation.kiemTraRong(nhanVienNew.chucVu, "chucVu") &
+    validation.kiemTraRong(nhanVienNew.gioLam, "gioLam");
+  //kiểm tra độ dài
+  valid =
+    valid &
+    validation.kiemTraDoDai(nhanVienNew.tkNhanVien, "taiKhoan", 4, 6) &
+    validation.kiemTraDoDai(nhanVienNew.matKhau, "matKhau", 6, 10);
+  //kiểm tra ký tự
+  valid =
+    valid & validation.kiemTraTatCaKyTu(nhanVienNew.tenNhanVien, "hoVaTen");
+  //kiểm tra email
+  valid = valid & validation.kiemTraEmail(nhanVienNew.email, "email");
+  //kiểm tra giá trị
+  valid =
+    valid &
+    validation.kiemTraGiaTri(
+      nhanVienNew.luongCoBan,
+      "luongCoBan",
+      1000000,
+      20000000
+    ) &
+    validation.kiemTraGiaTri(nhanVienNew.gioLam, "gioLam", 80, 200);
+  //kiểm tra chức vụ
+  valid = valid & validation.kiemTraChucVu(nhanVienNew.chucVu, "chucVu");
+  //kiểm tra mật khẩu
+  valid = valid & validation.kiemTraPassword(nhanVienNew.matKhau, "matKhau");
+
+  if (!valid) {
+    return;
+  }
+
   arrNhanVien.push(nhanVienNew);
-  console.log(arrNhanVien);
   renderTableNhanVien(arrNhanVien);
   localStoreArr();
+  document.querySelector("#tknv").value = "";
+  document.querySelector("#name").value = "";
+  document.querySelector("#email").value = "";
+  document.querySelector("#password").value = "";
+  document.querySelector("#datepicker").value = "";
+  document.querySelector("#luongCB").value = "";
+  document.querySelector("#chucvu").value = "";
+  document.querySelector("#gioLam").value = "";
 };
 
 document.querySelector("#btnThem").onclick = function () {
